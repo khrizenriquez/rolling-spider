@@ -1,0 +1,24 @@
+<footer title="Chris Enríquez">
+    <a href="https://twitter.com/khrizenriquez">@khrizenriquez</a>
+</footer>
+
+<script>
+	'use strict';
+	var droneAction = function (todo) {
+	    let xhr = new XMLHttpRequest();
+	    xhr.onreadystatechange = function() {
+	        if (xhr.readyState == XMLHttpRequest.DONE) {
+	            let response    = JSON.parse(xhr.responseText);
+	            console.log(response);
+	        }
+	    };
+	    xhr.open('POST', `/droneaction/${todo}`, true);
+	    xhr.send(null);
+	};
+	document.querySelector('#wakeup').addEventListener('click', function (e) {
+	    droneAction('wakeupdrone');
+	});
+	document.querySelector('#putsleep').addEventListener('click', function (e) {
+	    droneAction('putsleep');
+	});
+</script>
