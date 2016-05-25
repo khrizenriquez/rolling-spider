@@ -82,7 +82,6 @@ var exphbs = require('express-handlebars');
 /********************************
 Middleware
 ********************************/
-app.use(express.static('public'));
 app.use(session);
 
 //var stylus  = require('stylus');
@@ -95,9 +94,8 @@ app.engine('handlebars', exphbs({
     partialsDir:    __dirname + '/views/partials'
 }));
 
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('views', __dirname + '/views');
-//app.set('view cache', false);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view cache', false);
 app.set('view engine', 'handlebars');
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -113,25 +111,28 @@ var users       = [],
     doActions   = false;
 
 io.on('connection', function (socket) {
-  console.log('someone connected');
-  socket.emit('user-connected', users);
+    console.log('someone connected');
+    socket.emit('user-connected', users);
 
-  socket.on('user-connected', function(data) {
-      users.push(data);
+    socket.on('user-connected', function(data) {
+        users.push(data);
 
-      if (socket.handshake.session.appName === undefined) {
-          socket.handshake.session.appName     = 'Rolling-spider';
-          socket.handshake.session.date        = new Date();
-          socket.handshake.session.deviceInfo  = '';
-          socket.handshake.session.myName      = data.myName;
-      }
+        if (socket.handshake.session.appName === undefined) {
+            socket.handshake.session.appName     = 'Rolling-spider';
+            socket.handshake.session.date        = new Date();
+            socket.handshake.session.deviceInfo  = '';
+            socket.handshake.session.myName      = data.myName;
+        }
 
-      io.sockets.emit('user-connected', users);
-  });
+        io.sockets.emit('user-connected', users);
+    });
 
-  socket.emit('user-actions', users);
+    socket.emit('user-actions', users);
 
     socket.on('user-actions', function(data) {
+        console.log('------------------');
+        console.dir(data);
+        console.log('------------------');
         let limit           = 10,
             lastElements    = [];
         data.userActions.done = false;
@@ -296,14 +297,18 @@ var connectUser = function (request, params) {
 }
 
 var userIsConnected = function (request) {
-    console.log(request);
     let session = request || {};
     return (session.appName === undefined) ? false : true;
 }
 
 //  Routes
+console.log(session);
+var login = require('./routes/login');
 var home  = require('./routes/home');
+var admin = require('./routes/admin');
+app.use('/', login);
 app.use('/', home);
+app.use('/', admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -344,5 +349,4 @@ http.listen(3000, function () {
     let port = this.address().port;
 
     console.log('Servidor en ruta http://%s:%s', host, port);
-    //console.log('listening on *:3000');
 });

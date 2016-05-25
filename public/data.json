@@ -1,0 +1,27 @@
+[
+    {
+        "id":       1,
+        "action":   "Arriba"
+    }, {
+        "id":       2,
+        "action":   "Abajo"
+    }, {
+        "id":       3,
+        "action":   "Izquierda"
+    }, {
+        "id":       4,
+        "action":   "Derecha"
+    }, {
+        "id":       5,
+        "action":   "Girar Izquierda"
+    }, {
+        "id":       6,
+        "action":   "Girar derecha"
+    }, {
+        "id":       7,
+        "action":   "Adelante"
+    }, {
+        "id":       8,
+        "action":   "Atrás"
+    }
+]

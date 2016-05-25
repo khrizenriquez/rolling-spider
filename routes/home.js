@@ -1,12 +1,15 @@
 var express = require('express');
 var router 	= express.Router();
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-	res.render('home/start', { 
-  		title: 'Rolling spider', 
-  		content: 'Welcome'
-  	});
+router.get('/inicio', function (req, res, next) {
+	console.dir(req.session);
+  	if (req.session.appName !== undefined) {
+		res.render('home/home', { 
+	  		title: 'Rolling Spider - demo, by Chris Enríquez'
+	  	});
+	} else {
+		res.redirect('/');
+	}
 });
 
 module.exports = router;
