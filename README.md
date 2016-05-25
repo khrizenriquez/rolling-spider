@@ -18,6 +18,10 @@ Por ahora recarga la pagina, pero la idea es utilizar angularJS o reactJS para e
 
 Los layouts o vistas que tiene este proyecto están con [handlebars](http://handlebarsjs.com/) y las acciones del drone se manipulan por medio de sockets, con [socket.io](http://socket.io/) de nodeJS
 
+En el administrador esta la opción de despegar o aterrizar al mini drone, se puede agregar la opción de aterrizaje de emergencia, pero queda pendiente de momento (http://localhost:3000/rollingadmin).
+
+![Proyecto metodología de la invesitación](https://raw.githubusercontent.com/khrizenriquez/rolling-spider/master/public/images/demo/admin.png)
+
 ##Instalación
 
 Requisitos: 
