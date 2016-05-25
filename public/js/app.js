@@ -13,7 +13,7 @@ socket.on('user-connected', function (data) {
     if (document.querySelector('#clients') !== null) {
         let tmpResponse = '';
         data.some(function (element, index, arr) {
-            tmpResponse += `<div class="connected-clients">
+            tmpResponse += `<div class="connected-clients" title="${element.myName}">
                                 <i class="fa fa-user"></i> ${element.myName}
                             </div>`;
         });
@@ -96,11 +96,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
                 let login = document.querySelector('.login-container');
                 login.style.right = '100%';
-                let clientDiv = document.querySelector('#clientActions');
+                window.location.href = '/inicio';
+                /*let clientDiv = document.querySelector('#clientActions');
                 setTimeout(function () {
                     clientDiv.classList.remove('display-none');
                     getDroneActions();
-                }, 1000);
+                }, 1000);*/
 
                 return false;
             });
