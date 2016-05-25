@@ -1,9 +1,11 @@
 #bower
-public/bower_components
-
+src/public/bower_components
+src/public/css/**/*.css
+src/public/css/*.css
 
 # Logs
 logs
+logs/*.log
 *.log
 npm-debug.log*
 
