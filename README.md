@@ -12,6 +12,8 @@ El usuario puede ingresar su nombre, y una vez hecho esto, puede ingresar al pan
 
 ![Proyecto metodología de la invesitación](https://github.com/khrizenriquez/rolling-spider/blob/master/images/demo/panel2.png)
 
+**Dentro de poco espero subir el video de demostración.**
+
 Por ahora recarga la pagina, pero la idea es utilizar angularJS o reactJS para evitar recargar la pagina y manipulación de rutas.
 
 Los layouts o vistas que tiene este proyecto están con [handlebars](http://handlebarsjs.com/) y las acciones del drone se manipulan por medio de sockets, con [socket.io](http://socket.io/) de nodeJS
