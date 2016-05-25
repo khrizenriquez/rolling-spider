@@ -302,13 +302,56 @@ var userIsConnected = function (request) {
 }
 
 //  Routes
-console.log(session);
 var login = require('./routes/login');
 var home  = require('./routes/home');
 var admin = require('./routes/admin');
 app.use('/', login);
 app.use('/', home);
 app.use('/', admin);
+
+//  Drone actions
+app.post('/droneaction/:action', function (req, res) {
+    if (req.params.action === 'wakeupdrone') {
+        ACTIVE = false;
+        console.log('Iniciar drone');
+        rollingSpider.connect(function (e) {
+            console.log('Conectado');
+            rollingSpider.setup(function () {
+                rollingSpider.flatTrim();
+                rollingSpider.startPing();
+                rollingSpider.flatTrim();
+                console.log('Dentro del setup');
+
+                ACTIVE = true;
+            });
+        });
+
+        var inter = setInterval(function () {
+
+            if (ACTIVE) {
+                console.log('Ya puedes apagar el drone');
+                rollingSpider.takeOff(function () {});
+
+                clearInterval(inter);
+            }
+        }, 2000);
+    } else
+    if (req.params.action === 'putsleep') {
+        console.log('Poner a domir');
+        rollingSpider.land(function () {
+            console.log('Aterrizando');
+            //  Mato todos los procesos actuales que ejecuta el drone
+            userActions = [];
+            doActions   = false;
+
+            process.exit(0);
+        });
+    } else {
+        console.log('Ninguna acción definida');
+    }
+
+    return res.json();
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
