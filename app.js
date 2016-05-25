@@ -21,8 +21,8 @@ app.use(cookieParser());
 // view engine setup
 var exphbs = require('express-handlebars');
 
-var stylus  = require('stylus');
-var nib     = require('nib');
+//var stylus  = require('stylus');
+//var nib     = require('nib');
 
 app.engine('handlebars', exphbs({
   extname:        '.handlebars', 
@@ -73,8 +73,4 @@ app.use(function(err, req, res, next) {
 });
 
 //  Export or initialize server
-if (!!module.parent) {
-  module.exports = app;
-} else {
-  app.listen(3000);
-}
+app.listen(3000);
