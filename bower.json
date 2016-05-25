@@ -1,0 +1,31 @@
+{
+  "name": "rolling-spider",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Chris Enríquez <christoferen7@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "rolling-spider"
+  ],
+  "homepage": "https://github.com/khrizenriquez/rolling-spider",
+  "moduleType": [
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ], 
+  "dependencies": {
+    "angular": "~1.5.*", 
+    "font-awesome": "latest", 
+    "normalize-css": "latest", 
+    "requirejs": "latest", 
+    "lodash": "2.*"
+  }
+}
