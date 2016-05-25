@@ -1,7 +1,7 @@
 #bower
-src/public/bower_components
-src/public/css/**/*.css
-src/public/css/*.css
+public/bower_components
+public/css/**/*.css
+public/css/*.css
 
 # Logs
 logs

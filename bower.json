@@ -25,7 +25,6 @@
     "angular": "~1.5.*", 
     "font-awesome": "latest", 
     "normalize-css": "latest", 
-    "requirejs": "latest", 
-    "lodash": "2.*"
+    "requirejs": "latest"
   }
 }
