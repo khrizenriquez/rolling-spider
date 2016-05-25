@@ -4,13 +4,13 @@ Cliente web en [Vanilla JS](http://vanilla-js.com/) y [pure.css](http://purecss.
 
 Al iniciar el servidor, por defecto esta en la ruta http://localhost:3000 y aparece esta vista
 
-![Ingresando las credenciales](https://github.com/khrizenriquez/rolling-spider/blob/master/images/demo/start.png)
+![Ingresando las credenciales](https://raw.githubusercontent.com/khrizenriquez/rolling-spider/master/public/images/demo/start.png)
 
 El usuario puede ingresar su nombre, y una vez hecho esto, puede ingresar al panel donde aparecen las acciones que tiene el drone
 
-![Proyecto metodología de la invesitación](https://github.com/khrizenriquez/rolling-spider/blob/master/images/demo/panel1.png)
+![Proyecto metodología de la invesitación](https://raw.githubusercontent.com/khrizenriquez/rolling-spider/master/public/images/demo/panel1.png)
 
-![Proyecto metodología de la invesitación](https://github.com/khrizenriquez/rolling-spider/blob/master/images/demo/panel2.png)
+![Proyecto metodología de la invesitación](https://raw.githubusercontent.com/khrizenriquez/rolling-spider/master/public/images/demo/panel2.png)
 
 **Dentro de poco espero subir el video de demostración.**
 
