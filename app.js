@@ -4,7 +4,6 @@
 
 'use strict';
 
-
 //  Rolling spider library
 var RollingSpider   = require('rolling-spider');
 var rollingSpider   = new RollingSpider();
@@ -115,14 +114,16 @@ io.on('connection', function (socket) {
     socket.emit('user-connected', users);
 
     socket.on('user-connected', function(data) {
-        users.push(data);
-
         if (socket.handshake.session.appName === undefined) {
             socket.handshake.session.appName     = 'Rolling-spider';
             socket.handshake.session.date        = new Date();
             socket.handshake.session.deviceInfo  = '';
-            socket.handshake.session.myName      = data.myName;
+            socket.handshake.session.myName      = purifyUserName(data.myName);
         }
+        let response = {
+            myName: socket.handshake.session.myName || '-'
+        }
+        users.push(response);
 
         io.sockets.emit('user-connected', users);
     });
@@ -130,9 +131,6 @@ io.on('connection', function (socket) {
     socket.emit('user-actions', users);
 
     socket.on('user-actions', function(data) {
-        console.log('------------------');
-        console.dir(data);
-        console.log('------------------');
         let limit           = 10,
             lastElements    = [];
         data.userActions.done = false;
@@ -176,18 +174,19 @@ var purifyUserName = function (name) {
         'fuck'
     ];
 
-    let tmpName = name.toLowerCase();
+    let flag = false;
     badWords.some(function (element, index, arr) {
-        if (tmpName.match(element)) {
-            finalName = n.replace(new RegExp(element, 'g'), '_');
-
-            let count = finalName.split('').map(function (a, b) {
-                return (a+b);
-            });
+        if (name.toLowerCase().match(element)) {
+            console.log(n);
+            console.log(element);
+            flag = true;
 
             return false;
         }
+        return false;
     });
+    return (flag) ? comodinName + '_' + Math.ceil(Math.random(0, 100) * 1000) :
+                    n;
 };
 
 function cooldown () {
@@ -199,8 +198,6 @@ function cooldown () {
 
 var droneFlight = function (action) {
     let a = action.toLowerCase() || '';
-
-    console.log(a);
 
     if (a === 'arriba') {
         rollingSpider.up({
@@ -258,9 +255,11 @@ var doQueueDroneActions = function () {
             doActions = false;
             return;
         }
-        //  Ejecuto la acción del drone
-        let p = userActions.pop();
+
         //  Elimino el ultimo valor
+        let p = userActions.pop();
+
+        //  Ejecuto la acción del drone
         droneFlight(p.action);
         io.sockets.emit('user-actions', userActions);
 
@@ -274,7 +273,7 @@ function createSessionForUser (request, params) {
         request.appName     = 'Rolling-spider';
         request.date        = new Date();
         request.deviceInfo  = '';
-        request.myName      = params.myName;
+        request.myName      = purifyUserName(params.myName);
     }
 }
 
@@ -315,12 +314,12 @@ app.post('/droneaction/:action', function (req, res) {
         ACTIVE = false;
         console.log('Iniciar drone');
         rollingSpider.connect(function (e) {
-            console.log('Conectado');
+            console.log('Drone conectado');
             rollingSpider.setup(function () {
                 rollingSpider.flatTrim();
                 rollingSpider.startPing();
                 rollingSpider.flatTrim();
-                console.log('Dentro del setup');
+                //console.log('Dentro del setup');
 
                 ACTIVE = true;
             });
@@ -329,7 +328,7 @@ app.post('/droneaction/:action', function (req, res) {
         var inter = setInterval(function () {
 
             if (ACTIVE) {
-                console.log('Ya puedes apagar el drone');
+                console.log('Drone listo para volar');
                 rollingSpider.takeOff(function () {});
 
                 clearInterval(inter);
