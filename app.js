@@ -8,6 +8,9 @@
 var RollingSpider   = require('rolling-spider');
 var rollingSpider   = new RollingSpider();
 
+var maxClients = 5, 
+    maxActions = 5;
+
 var os      = require('os'), 
     ifaces  = os.networkInterfaces(), 
     localIp = '';
@@ -114,6 +117,8 @@ io.on('connection', function (socket) {
     socket.emit('user-connected', users);
 
     socket.on('user-connected', function(data) {
+        if (users.length >= maxClients) return false;
+
         if (socket.handshake.session.appName === undefined) {
             socket.handshake.session.appName     = 'Rolling-spider';
             socket.handshake.session.date        = new Date();
@@ -123,6 +128,7 @@ io.on('connection', function (socket) {
         let response = {
             myName: socket.handshake.session.myName || '-'
         }
+
         users.push(response);
 
         io.sockets.emit('user-connected', users);
@@ -131,21 +137,29 @@ io.on('connection', function (socket) {
     socket.emit('user-actions', users);
 
     socket.on('user-actions', function(data) {
-        let limit           = 10,
+        let limit           = 10, 
             lastElements    = [];
-        data.userActions.done = false;
+        data.userActions.userName   = socket.handshake.session.myName || '';
+        data.userActions.done       = false;
+
+        if (userActions.length >= maxActions) return false;
         userActions.unshift(data.userActions);
 
         if (userActions.length > 0) {
             doActions = true;
             userActions.some(function (element, index, arr) {
+                console.log(element);
                 if (index >= limit) return false;
+
+                if (lastElements.length >= maxActions) return false;
 
                 lastElements.push(element);
             });
         } else {
             doActions = false;
         }
+
+        if (lastElements.length >= maxActions) return false;
 
         io.sockets.emit('user-actions', lastElements);
     });
@@ -249,11 +263,11 @@ var droneFlight = function (action) {
 
 var doQueueDroneActions = function () {
     let interval = setInterval(function () {
-        if (!doActions) return;
+        if (!doActions) return false;
 
         if (userActions.length <= 0) {
             doActions = false;
-            return;
+            return false;
         }
 
         //  Elimino el ultimo valor
@@ -261,9 +275,12 @@ var doQueueDroneActions = function () {
 
         //  Ejecuto la acción del drone
         droneFlight(p.action);
+        //console.log(userActions);
+        //console.log(userActions.length);
+        if (userActions.length >= maxActions) return false;
         io.sockets.emit('user-actions', userActions);
 
-        return;
+        return false;
     }, 3000);
 }();
 

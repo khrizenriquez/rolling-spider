@@ -4,14 +4,15 @@
 */
 'use strict';
 
-let ipData = (window.location.href.match('localhost') !== null) ? 'localhost' : '192.168.0.18';
+//var ipData = (window.location.href.match('localhost') !== null) ? 'localhost' : '192.168.0.18';
+var ipData = (window.location.href.match('localhost') !== null) ? 'localhost' : '192.168.30.29';
 
-let droneActions, 
+var droneActions, 
     socket = io.connect(`http://${ipData}:3000`, { 'forceNew': true });
 
 socket.on('user-connected', function (data) {
     if (document.querySelector('#clients') !== null) {
-        let tmpResponse = '';
+        var tmpResponse = '';
         data.some(function (element, index, arr) {
             tmpResponse += `<div class="connected-clients" title="${element.myName}">
                                 <i class="fa fa-user"></i> ${element.myName}
@@ -27,9 +28,9 @@ socket.on('user-actions', function (data) {
     getDroneActions();
 });
 
-let userAction = function (elementId) {
-    let actionId = parseInt(elementId);
-    let actionObject;
+var userAction = function (elementId) {
+    var actionId = parseInt(elementId);
+    var actionObject;
     droneActions.some(function (element, index, arr) {
         if (element.id === actionId) {
             actionObject = element;
@@ -38,15 +39,14 @@ let userAction = function (elementId) {
     });
 
     socket.on('user-actions', function (data) {
-        let queueList = document.querySelector('#queue-list .list');
-        let tmpData = '';
+        var queueList = document.querySelector('#queue-list .list');
+        var tmpData = '';
 
         data.some(function (element, index, arr) {
             if (element === null) return;
-            tmpData += `<div class="actions-client" id="${element.id}">${element.action}</div>`;
+            tmpData += `<div class="actions-client" id="${element.id}">${element.action} - ${element.userName}</div>`;
         });
         queueList.innerHTML = tmpData;
-        //console.log(data);
     });
     socket.emit('user-actions', { userActions: actionObject });
     /*document.querySelector('#options-container .options-container-elements').addEventListener('click', function (evt) {
@@ -56,15 +56,15 @@ let userAction = function (elementId) {
 /*
 *   Obtenemos las acciones que el drone podrá ejecutar
 */
-let getDroneActions = function () {
-    let xhr = new XMLHttpRequest();
-    let element = document.querySelector('#options-container .options-container-elements');
+var getDroneActions = function () {
+    var xhr = new XMLHttpRequest();
+    var element = document.querySelector('#options-container .options-container-elements');
     if (element === null) return;
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
-            let response    = JSON.parse(xhr.responseText);
-            let actionPart  = document.createElement("div");
-            let txtResponse = '';
+            var response    = JSON.parse(xhr.responseText);
+            var actionPart  = document.createElement("div");
+            var txtResponse = '';
             response.some(function (elem, index, arr) {
                 txtResponse += `<div onclick="return userAction(this.id);" class="drone-actions-list relative button-3d" id="${elem.id}">${elem.action} <span class="userAction drone-actions-list-icon midnight-blue"><i class="fa fa-plus"></i></span></div>`;
             });
@@ -77,11 +77,11 @@ let getDroneActions = function () {
 };
 
 document.addEventListener('DOMContentLoaded', function (e) {
-    let button     = document.querySelector('#connect');
-    let userName   = document.querySelector('#username');
+    var button     = document.querySelector('#connect');
+    var userName   = document.querySelector('#username');
     if (button !== null) {
         button.addEventListener('click', function (e) {
-            //let socket = io('/rolling-chanel');
+            //var socket = io('/rolling-chanel');
             e.preventDefault();
 
             if (/^\s*$/.test(document.querySelector('#username').value)) {
@@ -89,15 +89,16 @@ document.addEventListener('DOMContentLoaded', function (e) {
             }
 
             socket.on('user-connected', function (data) {
-                console.log(data[0].myName);
+                console.log(data);
+
                 if (data[0].myName === undefined) {
                     return false;
                 }
 
-                let login = document.querySelector('.login-container');
+                var login = document.querySelector('.login-container');
                 login.style.right = '100%';
                 window.location.href = '/inicio';
-                /*let clientDiv = document.querySelector('#clientActions');
+                /*var clientDiv = document.querySelector('#clientActions');
                 setTimeout(function () {
                     clientDiv.classList.remove('display-none');
                     getDroneActions();
