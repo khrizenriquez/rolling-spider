@@ -5,7 +5,7 @@
 'use strict';
 
 //var ipData = (window.location.href.match('localhost') !== null) ? 'localhost' : '192.168.0.18';
-var ipData = (window.location.href.match('localhost') !== null) ? 'localhost' : '192.168.30.29';
+var ipData = (window.location.href.match('localhost') !== null) ? 'localhost' : '192.168.126.106';
 
 var droneActions, 
     socket = io.connect(`http://${ipData}:3000`, { 'forceNew': true });
